@@ -29,8 +29,18 @@ o prazo de entrega.
 
 */
 
+// Lista de adjacências que representa nosso grafo
+// A: (B,5) -> (C,4) -> (D,2) 
+// B: (A,5) -> (C,6) -> (E,6) -> (H,9)
+// C: (A,4) -> (B,6) -> (D,3) -> (E,4)
+// D: (A,2) -> (C,3) -> (E,5) -> (F,9)
+// E: (B,6) -> (C,4) -> (D,5) -> (F,2) -> (H,6)
+// F: (D,9) -> (E,2) -> (H,3)
+// H: (B,9) -> (E,6) -> (F,3)
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "set.h"
 
@@ -39,23 +49,23 @@ o prazo de entrega.
 
 struct no
 {
-    int vtx;
-    int dist;
-    struct no *next;
+    int vtx; //vertice
+    int dist; //peso
+    struct no *next; //proximo
 };
 struct no *criano(int);
 
 struct Graph
 {
-    int qtd_vtx;
-    struct no **adjLists;
+    int qtd_vtx; //quantidade de vertices
+    struct no **adjLists; //lista de adjacencias
 };
 
 struct priorityqueue
 {
-    int qtd;
-    int *vtx;
-    int *dist;
+    int qtd; //quantidade de elementos
+    int *vtx; //vetor de vertices
+    int *dist; //vetor de distancias
 };
 typedef struct priorityqueue *queue;
 
@@ -130,9 +140,27 @@ struct no *criano(int v)
 struct Graph *criagraph(int vertices)
 {
     struct Graph *graph = malloc(sizeof(struct Graph));
+    if (graph == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        exit(1);
+    }
+
     graph->adjLists = malloc(vertices * sizeof(struct no *));
+    if (graph->adjLists == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        exit(1);
+    }
 
     graph->qtd_vtx = vertices;
+
+    graph->adjLists = malloc(vertices * sizeof(struct AdjList *));
+    if (graph->adjLists == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        exit(1);
+    }
 
     for (int i = 0; i < vertices; i++)
         graph->adjLists[i] = NULL;
@@ -163,10 +191,10 @@ void printgraph(struct Graph *graph)
     for (v = 0; v < graph->qtd_vtx; v++)
     {
         struct no *temp = graph->adjLists[v];
-        printf("\n vtx %d\n: ", v);
+        printf("\n Vertice %c: ", v + 'a');
         while (temp)
         {
-            printf("%d -> ", temp->vtx);
+            printf("%c -> ", temp->vtx + 'a');
             temp = temp->next;
         }
         printf("\n");
@@ -177,7 +205,17 @@ void printgraph(struct Graph *graph)
 int caminho_mais_curto(struct Graph *graph, int s, int d)
 {
     int *dist = malloc(graph->qtd_vtx * sizeof(int));
+    if (dist == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        exit(1);
+    }
     int *prev = malloc(graph->qtd_vtx * sizeof(int));
+    if (prev == NULL)
+    {
+        printf("Erro ao alocar memoria\n");
+        exit(1);
+    }
     int *visitado = malloc(graph->qtd_vtx * sizeof(int));
     for (int i = 0; i < graph->qtd_vtx; i++)
     {
@@ -215,14 +253,14 @@ int caminho_mais_curto(struct Graph *graph, int s, int d)
         printf("%d ", i);
         i = prev[i];
     }
-    printf("%d\n", i);
+    printf("%c\n", i + 'a');
     return dist[d];
 }
 
 void DFS(struct Graph *graph, int v, int *visitado)
 {
     visitado[v] = 1;
-    printf("%d ", v);
+    printf("%c ", v + 'a');
     struct no *temp = graph->adjLists[v];
     while (temp)
     {
@@ -235,22 +273,50 @@ void DFS(struct Graph *graph, int v, int *visitado)
 
 int main()
 {
-    struct Graph *graph = criagraph(4);
+    struct Graph *graph = criagraph(7);
+    printf("1) Representação do grafo usando lista de adjacências (h do Grafo da Questão == Nosso g)\n");
     addaresta(graph, 0, 1, 5);
-    addaresta(graph, 0, 3, 3);
-    addaresta(graph, 1, 2, 1);
+    addaresta(graph, 0, 2, 4);
+    addaresta(graph, 0, 3, 2);
+    addaresta(graph, 1, 0, 5);
+    addaresta(graph, 1, 2, 6);
+    addaresta(graph, 1, 4, 6);
+    addaresta(graph, 1, 6, 9);
+    addaresta(graph, 2, 0, 4);
+    addaresta(graph, 2, 1, 6);
+    addaresta(graph, 2, 3, 3);
+    addaresta(graph, 2, 4, 4);
+    addaresta(graph, 3, 0, 2);
+    addaresta(graph, 3, 2, 3);
+    addaresta(graph, 3, 4, 5);
+    addaresta(graph, 3, 5, 9);
+    addaresta(graph, 4, 1, 6);
+    addaresta(graph, 4, 2, 4);
+    addaresta(graph, 4, 3, 5);
+    addaresta(graph, 4, 5, 2);
+    addaresta(graph, 4, 6, 6);
+    addaresta(graph, 5, 3, 9);
+    addaresta(graph, 5, 4, 2);
+    addaresta(graph, 5, 6, 3);
+    addaresta(graph, 6, 1, 9);
+    addaresta(graph, 6, 4, 6);
+    addaresta(graph, 6, 5, 3);
 
     printgraph(graph);
 
-    printf("caminho mais curto: %d -> %d = %d\n", 0, 2, caminho_mais_curto(graph, 0, 2));
+    printf("\n2)a) Caminho mais curto a partir do vértice A, utilizando o algoritmo de Dijkstra: %d -> %d = %d\n", 0, 2, caminho_mais_curto(graph, 0, 2));
 
     int *visitado = malloc(graph->qtd_vtx * sizeof(int));
     for (int i = 0; i < graph->qtd_vtx; i++)
         visitado[i] = 0;
-    printf("DFS: ");
+
+    printf("\n2)b) DFS, a partir do vértice A: ");
     DFS(graph, 0, visitado);
     printf("\n");
     free(visitado);
+    free(graph->adjLists);
+    free(graph);
+
 
     return 0;
 }
