@@ -1,10 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int* set(int *A, int *N)
+// int* set(int *A, int *N)
+char* set(char *A, int *N)
 {
-    int *Set_Array;
-    Set_Array = (int*)malloc((*N)*sizeof(int));
+    char *Set_Array;
+    Set_Array = (char*)malloc((*N)*sizeof(char));
 
     int j = 0;
 
@@ -32,14 +33,14 @@ int* set(int *A, int *N)
     return Set_Array;
 }
 //---------------------------------------------------------
-int* set_intersection(int *A1, int *N1, int *A2, int *N2)
+char* set_intersection(char *A1, int *N1, char *A2, int *N2)
 {
-    int *Set_A1, *Set_A2, *Intersect_Set;
+    char *Set_A1, *Set_A2, *Intersect_Set;
     int greatest = 0;
     int k = 0;
 
-    Set_A1 = (int*)malloc((*N1)*sizeof(int));
-    Set_A2 = (int*)malloc((*N2)*sizeof(int));
+    Set_A1 = (char*)malloc((*N1)*sizeof(char));
+    Set_A2 = (char*)malloc((*N2)*sizeof(char));
 
     Set_A1 = set(A1, N1);
     Set_A2 = set(A2, N2);
@@ -50,7 +51,7 @@ int* set_intersection(int *A1, int *N1, int *A2, int *N2)
     else
         greatest = *N2;
 
-    Intersect_Set = (int*)malloc((greatest)*sizeof(int));
+    Intersect_Set = (char*)malloc((greatest)*sizeof(char));
     
     for(int m=0;m < *N1;m++)
     {
@@ -69,19 +70,19 @@ int* set_intersection(int *A1, int *N1, int *A2, int *N2)
 
 }
 //--------------------------------------------------------
-int* set_union(int *A3, int *N3, int *A4, int *N4)
+char* set_union(char *A3, int *N3, char *A4, int *N4)
 {
-    int *Set_A3, *Set_A4, *Union_Set;
+    char *Set_A3, *Set_A4, *Union_Set;
     int sum = 0;
     int leng = 0;
 
-    Set_A3 = (int*)malloc((*N3)*sizeof(int));
-    Set_A4 = (int*)malloc((*N4)*sizeof(int));
+    Set_A3 = (char*)malloc((*N3)*sizeof(char));
+    Set_A4 = (char*)malloc((*N4)*sizeof(char));
 
     Set_A3 = set(A3, N3);
     Set_A4 = set(A4, N4);
     sum = *N3 + *N4;
-    Union_Set = (int*)malloc((sum)*sizeof(int));
+    Union_Set = (char*)malloc((sum)*sizeof(char));
 
     if(*N3 >= *N4)
     {
@@ -149,19 +150,19 @@ int* set_union(int *A3, int *N3, int *A4, int *N4)
 
 }
 //---------------------------------------------------------
-int* set_difference(int *A5, int *N5, int *A6, int *N6)
+char* set_difference(char *A5, int *N5, char *A6, int *N6)
 {
-    int *Set_A5, *Set_A6, *Diff_Set;
+    char *Set_A5, *Set_A6, *Diff_Set;
     int leng = 0;
     int i, j;
     int k = 0;
 
-    Set_A5 = (int*)malloc((*N5)*sizeof(int));
-    Set_A6 = (int*)malloc((*N6)*sizeof(int));
+    Set_A5 = (char*)malloc((*N5)*sizeof(char));
+    Set_A6 = (char*)malloc((*N6)*sizeof(char));
 
     Set_A5 = set(A5, N5);
     Set_A6 = set(A6, N6);
-    Diff_Set = (int*)malloc((*N5)*sizeof(int));
+    Diff_Set = (char*)malloc((*N5)*sizeof(char));
 
     for(i=0;i < *N5;i++)
     {
@@ -183,7 +184,7 @@ int* set_difference(int *A5, int *N5, int *A6, int *N6)
     return Diff_Set;
 }
 //----------------------------------------------------------
-int *set_sort(int *A7, int *N7, int choice)
+char *set_sort(char *A7, int *N7, int choice)
 {
     if(choice == 1)
     {
@@ -194,7 +195,7 @@ int *set_sort(int *A7, int *N7, int choice)
             {
                 if(A7[x] > A7[x+1])
                 {
-                    int temp = 0;
+                    char temp = 0;
                     temp = A7[x];
                     A7[x] = A7[x+1];
                     A7[x+1] = temp;
@@ -215,7 +216,7 @@ int *set_sort(int *A7, int *N7, int choice)
             {
                 if(A7[x] < A7[x+1])
                 {
-                    int temp = 0;
+                    char temp = 0;
                     temp = A7[x];
                     A7[x] = A7[x+1];
                     A7[x+1] = temp;
@@ -230,9 +231,9 @@ int *set_sort(int *A7, int *N7, int choice)
     return A7;
 }
 //----------------------------------------------------------
-int maxof(int *A8, int *N8)
+char maxof(char *A8, int *N8)
 {
-    int max_elem = A8[0];
+    char max_elem = A8[0];
 
     for(int d=0;d < *N8;d++)
     {
@@ -245,9 +246,9 @@ int maxof(int *A8, int *N8)
     return max_elem;
 }
 //----------------------------------------------------------
-int minof(int *A9, int *N9)
+char minof(char *A9, int *N9)
 {
-    int min_elem = A9[0];
+    char min_elem = A9[0];
 
     for(int d=0;d < *N9;d++)
     {
@@ -260,9 +261,9 @@ int minof(int *A9, int *N9)
     return min_elem;
 }
 //-----------------------------------------------------------
-int sumall(int *A9, int *N9)
+char sumall(char *A9, int *N9)
 {
-    int adding = 0;
+    char adding = 0;
 
     for(int y=0;y < *N9;y++)
     {
